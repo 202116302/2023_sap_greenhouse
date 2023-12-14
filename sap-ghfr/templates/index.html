@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.4/raphael-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/justgage/1.2.2/justgage.js"></script>
+    <title>Face Recognition</title>
+    <style>
+        .wrapper {
+            position: relative;
+            width: 1000px;
+            height: 50%;
+            border-radius: 3px;
+            clear: both;
+        }
+
+        .box {
+            float: left;
+            width: 25%;
+            height: 40%;
+            box-sizing: border-box;
+        }
+
+        .gauge {
+            width: 100%;
+            height: 240px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <!-- Left Section: Face Recognition -->
+            <div class="col-md-6">
+                <h1 class="mb-4">Face Recognition</h1>
+                <form method="post" action="/">
+                    <div class="form-group">
+                        <label for="student_id">학번을 입력하세요:</label>
+                        <input type="text" class="form-control" id="student_id" name="student_id" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">인식 시작</button>
+                </form>
+                {% if error_message %}
+                    <div class="alert alert-danger mt-3" role="alert">
+                        {{ error_message }}
+                    </div>
+                {% endif %}
+                {% if warning_message %}
+                    <div class="alert alert-warning mt-3" role="alert">
+                        {{ warning_message }}
+                    </div>
+                {% endif %}
+                {% if success_message %}
+                    <div class="alert alert-success mt-3" role="alert">
+                        {{ success_message }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Right Section: Temperature and Humidity Gauges -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between p-md-1">
+                            <div class="d-flex flex-row">
+                                <div class="align-self-center">
+                                    <i class="fas fa-pencil-alt text-info fa-3x me-4"></i>
+                                </div>
+                                <div>
+                                    <h4>Current Worker</h4>
+                                    <p class="mb-0">{{ current_date }}</p>
+                                </div>
+                            </div>
+                            <div class="align-self-center">
+                                {% if conf_name %}
+                                    <h2 class="h1 mb-0">{{ conf_name }}</h2>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="wrapper">
+                            <div class="box">
+                                <div id="g1" class="gauge"></div>
+                            </div>
+                            <div class="box">
+                                <div id="g2" class="gauge"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="wrapper">
+                    <div class="box">
+                        <div id="g1" class="gauge"></div>
+                    </div>
+                    <div class="box">
+                        <div id="g2" class="gauge"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function (event) {
+            var g1 = new JustGage({
+                id: "g1",
+                value: "15",
+                min: "5",
+                max: "20",
+                title: "온도",
+                symbol: "°C",
+                reverse: false,
+                gaugeWidthScale: 0.6,
+                counter: true,
+                levelColors: ["#EA642D"]
+            });
+    
+            var g2 = new JustGage({
+                id: "g2",
+                value: "78",
+                min: "66",
+                max: "83",
+                title: "습도",
+                symbol: "%",
+                reverse: false,
+                gaugeWidthScale: 0.6,
+                counter: true,
+                levelColors: ["#649E4E"]
+            });
+        })
+    </script>
+</body>
+</html>

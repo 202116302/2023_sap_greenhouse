@@ -12,7 +12,7 @@ def main():
     student_id = st.text_input('학번을 입력하세요:')
 
     if st.button("인식 시작"):
-        saved_img_name = [f for f in os.listdir('./data') if f.startswith(student_id)]
+        saved_img_name = [f for f in os.listdir('../../../../Downloads/ghfr/data') if f.startswith(student_id)]
 
         if not saved_img_name:
             st.error('등록된 사용자가 아닙니다.')
@@ -44,7 +44,7 @@ def main():
                         'name': [conf_name]
                     })
     
-                    output_dir = './result'
+                    output_dir = '../../../../Downloads/ghfr/result'
                     if not os.path.exists(output_dir):
                         os.makedirs(output_dir)
     

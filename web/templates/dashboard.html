@@ -1,0 +1,90 @@
+<html lang="en">
+<head>
+    <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard-style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            function updateData() {
+                $.ajax({
+                    url: 'https://api.thingspeak.com/channels/2328517/feeds.csv?results=1',
+                    type: 'GET',
+                    success: function (response) {
+                        var data = Papa.parse(response, {header: true, skipEmptyLines: true}).data[0];
+
+                        $('#temperature').text(parseFloat(data.field1).toFixed(1) + '°C');
+                        $('#humidity').text(parseFloat(data.field2).toFixed(1) + '%');
+                        $('#sun').text(parseFloat(data.field3).toFixed(1) + '');
+                        $('#soil').text(parseFloat(data.field4).toFixed(1) + '%');
+                    }
+                });
+            }
+
+            updateData();
+            setInterval(updateData, 60000);
+        })
+    </script>
+</head>
+<div class="app">
+    <header class="app-header">
+        <div class="app-header-logo">
+            <div class="logo">
+				<span class="logo-icon">
+					<img src="{{ url_for('static', filename='images/greenhouse.png') }}"/>
+				</span>
+                <h1 class="logo-title">
+                    <span>SmartFarm</span>
+                </h1>
+            </div>
+        </div>
+    </header>
+
+    <div class="app-body">
+        <div class="tiles">
+            <article class="tile">
+                <div class="tile-header">
+                    <h3>
+                        <span>Temperature</span>
+                        <span id="temperature" style="text-align: right"></span>
+                    </h3>
+                </div>
+            </article>
+            <article class="tile">
+                <div class="tile-header">
+                    <h3>
+                        <span>Humidity</span>
+                        <span id="humidity" style="text-align: right"></span>
+                    </h3>
+                </div>
+            </article>
+            <article class="tile">
+                <div class="tile-header">
+                    <h3>
+                        <span>Lux</span>
+                        <span id="sun" style="text-align: right"></span>
+                    </h3>
+                </div>
+            </article>
+            <article class="tile">
+                <div class="tile-header">
+                    <h3>
+                        <span>Soil Water</span>
+                        <span id="soil" style="text-align: right"></span>
+                    </h3>
+                </div>
+            </article>
+        </div>
+    </div>
+
+    <div class="app-body">
+        <br>
+        <br>
+        <iframe src="https://map.kakao.com" height="300" width="100%"></iframe>
+    </div>
+</div>
+</html>

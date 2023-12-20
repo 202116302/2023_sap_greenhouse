@@ -46,10 +46,5 @@ def compare_faces():
     return render_template('index.html', results=results)
 
 
-@app.route('/dashboard')
-def dashboard():
-    return render_template('dashboard.html')
-
-
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=50, debug=True)

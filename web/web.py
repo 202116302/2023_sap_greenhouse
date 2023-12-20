@@ -10,6 +10,7 @@ app = Flask(__name__)
 def home():
     return render_template('index.html')
 
+
 @app.route('/compare_faces', methods=['POST'])
 def compare_faces():
     student_id = request.form['student_id']
@@ -21,7 +22,7 @@ def compare_faces():
     else:
         user_uploaded_file = request.files['camera']
         user_uploaded_image = Image.open(user_uploaded_file)
-        rotated_image = user_uploaded_image.rotate(-90)
+        rotated_image = user_uploaded_image.rotate(-90).transpose(Image.FLIP_LEFT_RIGHT)
         rotated_image.save('user.jpg')
 
         saved_img = face_recognition.load_image_file(f'./data/{saved_img_name[0]}')

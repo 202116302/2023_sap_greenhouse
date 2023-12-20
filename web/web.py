@@ -36,12 +36,12 @@ def compare_faces():
             results = face_recognition.compare_faces([saved_img_encoding], unknown_face_encoding, tolerance=0.55)
 
             if results[0]:
-                conf_name = saved_img_name[0].split('.')[0].split('_')[-1]
-                results = conf_name
+                results = saved_img_name[0].split('.')[0].split('_')[-1]
 
-                return redirect(url_for('dashboard', results=results))
+                return render_template('dashboard.html', results=results)
         else:
             results = '등록된 사용자와 일치하지않습니다.'
+
     return render_template('index.html', results=results)
 
 

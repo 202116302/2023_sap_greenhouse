@@ -31,14 +31,16 @@
             <div class="form-group">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                    <input type="text" name="student_id" class="form-control" placeholder="학번을 입력하세요" required="required">
+                    <input type="text" name="student_id" class="form-control" placeholder="학번을 입력하세요"
+                           required="required">
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-camera"></i></span>
-                    <input type="file" name="camera" class="form-control" capture="user" accept="image/*" required="required">
+                    <input type="file" name="camera" class="form-control" capture="user" accept="image/*"
+                           required="required">
                 </div>
             </div>
 
@@ -49,8 +51,8 @@
 
         {% if results is defined %}
         <div class="hint-text">{{ results|safe }}</div>
-            {% endif %}
-        </div>
+        {% endif %}
     </div>
+</div>
 </body>
 </html>

@@ -166,12 +166,8 @@ a {
 	flex-direction: column;
 	line-height: 1.25;
 	margin-left: 0.75rem;
-	span:first-child {
-		color: var(--c-text-primary);
-	}
-	span:last-child {
-		color: var(--c-text-tertiary);
-	}
+	text-align: center;
+	font-size: 18px;
 }
 
 .tabs {
@@ -274,7 +270,7 @@ a {
 	row-gap: 1rem;
 	margin-top: 1.25rem;
 	@media (max-width: 700px) {
-		grid-template-columns: repeat(1, 1fr);
+		grid-template-columns: repeat(2, 1fr);
 	}
 }
 
@@ -581,7 +577,8 @@ a {
 }
 
 .transfer {
-	display: flex;
+    display: grid;
+	grid-template-columns: repeat(4, 1fr);
 	align-items: center;
 	width: 100%;
 	font-size: 0.875rem;

@@ -19,7 +19,7 @@
 
                         $('#temperature').text(parseFloat(data.field1).toFixed(1) + '°C');
                         $('#humidity').text(parseFloat(data.field2).toFixed(1) + '%');
-                        $('#sun').text(parseFloat(data.field3).toFixed(1) + '');
+                        $('#sun').text(parseFloat(data.field3).toFixed(1) + 'lux');
                         $('#soil').text(parseFloat(data.field4).toFixed(1) + '%');
                     }
                 });
@@ -37,53 +37,55 @@
 				<span class="logo-icon">
 					<img src="{{ url_for('static', filename='images/greenhouse.png') }}"/>
 				</span>
-                <h1 class="logo-title">
+                <h4 class="logo-title">
                     <span>SmartFarm</span>
-                </h1>
+                </h4>
             </div>
         </div>
+        {% if results is defined %}
+        <span>{{ results }} 님</span>
+        {% endif %}
     </header>
 
     <div class="app-body">
         <div class="tiles">
-            <article class="tile">
-                <div class="tile-header">
-                    <h3>
-                        <span>Temperature</span>
-                        <span id="temperature" style="text-align: right"></span>
-                    </h3>
-                </div>
-            </article>
-            <article class="tile">
-                <div class="tile-header">
-                    <h3>
-                        <span>Humidity</span>
-                        <span id="humidity" style="text-align: right"></span>
-                    </h3>
-                </div>
-            </article>
-            <article class="tile">
-                <div class="tile-header">
-                    <h3>
-                        <span>Lux</span>
-                        <span id="sun" style="text-align: right"></span>
-                    </h3>
-                </div>
-            </article>
-            <article class="tile">
-                <div class="tile-header">
-                    <h3>
-                        <span>Soil Water</span>
-                        <span id="soil" style="text-align: right"></span>
-                    </h3>
-                </div>
-            </article>
+            <div class="tile">
+                <dl class="tile-header">
+                    <div>
+                        <dt>Temperature</dt>
+                        <dd id="temperature"></dd>
+                    </div>
+                </dl>
+            </div>
+            <div class="tile">
+                <dl class="tile-header">
+                    <div>
+                        <dt>Humidity</dt>
+                        <dd id="humidity"></dd>
+                    </div>
+                </dl>
+            </div>
+            <div class="tile">
+                <dl class="tile-header">
+                    <div>
+                        <dt>Soil Water</dt>
+                        <dd id="soil"></dd>
+                    </div>
+                </dl>
+            </div>
+            <div class="tile">
+                <dl class="tile-header">
+                    <div>
+                        <dt>Sunshine</dt>
+                        <dd id="sun"></dd>
+                    </div>
+                </dl>
+            </div>
         </div>
     </div>
 
-    <div class="app-body">
-        <br>
-        <br>
+    <div class="transfers">
+        <br><br><br>
         <iframe src="https://map.kakao.com" height="300" width="100%"></iframe>
     </div>
 </div>

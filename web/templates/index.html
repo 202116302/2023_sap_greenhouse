@@ -1,0 +1,58 @@
+<html lang="en">
+<head>
+    <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index-style.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            $('#camera').change(function (e) {
+                $('#pic').attr('src', URL.createObjectURL(e.target.files[0]))
+            });
+        });
+    </script>
+</head>
+<body>
+<div id="loginContainer">
+    <div class="login-form">
+        <form action="/compare_faces" method="post" enctype="multipart/form-data">
+            <div class="text-center padding-top-100px">
+                <img class="mx-auto d-block margin-bottom-25px" width="100px"
+                     src="{{ url_for('static', filename='images/greenhouse.png') }}">
+            </div>
+
+            <h1 class="text-center light-green-color margin-bottom-25px">SmartFarm</h1>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                    <input type="text" name="student_id" class="form-control" placeholder="학번을 입력하세요"
+                           required="required">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-camera"></i></span>
+                    <input type="file" name="camera" class="form-control" capture="user" accept="image/*"
+                           required="required">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-success btn-block" id="signinButton">로그인</button>
+            </div>
+        </form>
+
+        {% if results is defined %}
+        <div class="hint-text">{{ results|safe }}</div>
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>

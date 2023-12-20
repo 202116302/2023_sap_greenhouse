@@ -1,0 +1,92 @@
+<html lang="en">
+<head>
+    <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard-style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            function updateData() {
+                $.ajax({
+                    url: 'https://api.thingspeak.com/channels/1999883/feeds.csv?api_key=XP1R5CVUPVXTNJT0&results=1',
+                    type: 'GET',
+                    success: function (response) {
+                        var data = Papa.parse(response, {header: true, skipEmptyLines: true}).data[0];
+
+                        $('#temperature').text(parseFloat(data.field1).toFixed(1) + ' °C');
+                        $('#humidity').text(parseFloat(data.field2).toFixed(1) + ' %');
+                        $('#sun').text(parseFloat(data.field3).toFixed(1) + ' lux');
+                        // $('#soil').text(parseFloat(data.field4).toFixed(1) + '%');
+                    }
+                });
+            }
+
+            updateData();
+            setInterval(updateData, 60000);
+        })
+    </script>
+</head>
+<div class="app">
+    <header class="app-header">
+        <div class="app-header-logo">
+            <div class="logo">
+				<span class="logo-icon">
+					<img src="{{ url_for('static', filename='images/greenhouse.png') }}"/>
+				</span>
+                <h4 class="logo-title">
+                    <span>SmartFarm</span>
+                </h4>
+            </div>
+        </div>
+        {% if results is defined %}
+        <span>{{ results }} 님</span>
+        {% endif %}
+    </header>
+
+    <div class="app-body">
+        <div class="tiles">
+            <div class="tile">
+                <dl class="tile-header">
+                    <div>
+                        <dt>Temperature</dt>
+                        <dd id="temperature"></dd>
+                    </div>
+                </dl>
+            </div>
+            <div class="tile">
+                <dl class="tile-header">
+                    <div>
+                        <dt>Humidity</dt>
+                        <dd id="humidity"></dd>
+                    </div>
+                </dl>
+            </div>
+            <div class="tile">
+                <dl class="tile-header">
+                    <div>
+                        <dt>Soil Water</dt>
+                        <dd id="soil">32.7 %</dd>
+                    </div>
+                </dl>
+            </div>
+            <div class="tile">
+                <dl class="tile-header">
+                    <div>
+                        <dt>Light</dt>
+                        <dd id="sun"></dd>
+                    </div>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    <div class="transfers">
+        <br><br><br>
+        <iframe src="http://113.198.63.26:21000" height="300" width="100%"></iframe>
+    </div>
+</div>
+</html>

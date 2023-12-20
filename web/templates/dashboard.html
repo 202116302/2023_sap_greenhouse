@@ -12,7 +12,7 @@
         $(document).ready(function () {
             function updateData() {
                 $.ajax({
-                    url: 'https://api.thingspeak.com/channels/2328517/feeds.csv?results=1',
+                    url: 'https://api.thingspeak.com/channels/1999883/feeds.csv?api_key=XP1R5CVUPVXTNJT0&results=1',
                     type: 'GET',
                     success: function (response) {
                         var data = Papa.parse(response, {header: true, skipEmptyLines: true}).data[0];

@@ -88,5 +88,38 @@
         <br><br><br>
         <iframe src="http://113.198.63.26:21000" height="300" width="100%"></iframe>
     </div>
+
+    <div id="controller">
+        <button id="led_on">led 켜기</button>
+        <button id="led_off">led 끄기</button>
+        <button id="fan_on">fan 켜기</button>
+        <button id="fan_off">fan 끄기</button>
+        <button id="water_on">water 켜기</button>
+        <button id="water_off">water 끄기</button>
+        <script>
+            function sendsignal(buttonid) {
+                    $.ajax({
+                        type: "POST",
+                        url: "http://113.198.63.26:21100/run_code",
+                        data: JSON.stringify({data: buttonid}),
+                        contentType: "application/json",
+                        success: now_result,
+                        dataType: "json"
+                    });
+
+                    function now_result() {
+                        console.log('data')
+                    }
+            }
+
+            document.querySelectorAll('button').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    var buttonId = this.id;
+                    sendsignal(buttonId);
+                });
+            });
+
+        </script>
+    </div>
 </div>
 </html>

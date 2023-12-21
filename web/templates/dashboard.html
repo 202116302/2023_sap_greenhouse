@@ -28,7 +28,39 @@
             updateData();
             setInterval(updateData, 60000);
         })
+
+        $( document ).ready( function() {
+        $( '.a' ).click( function() {
+          $( '.b' ).slideToggle();
+            });
+        });
+
+        $( document ).ready( function() {
+        $( '.a2' ).click( function() {
+          $( '.b2' ).slideToggle();
+            });
+        });
+        $( document ).ready( function() {
+        $( '.a3' ).click( function() {
+          $( '.b3' ).slideToggle();
+            });
+        });
+
+
     </script>
+    <style>
+      .b {
+          display: none;
+      }
+
+      .b2 {
+          display: none;
+      }
+
+      .b3 {
+          display: none;
+      }
+    </style>
 </head>
 <div class="app">
     <header class="app-header">
@@ -89,13 +121,31 @@
         <iframe src="http://113.198.63.26:14100" height="300" width="100%"></iframe>
     </div>
 
-    <div id="controller">
-        <button id="led_on">led 켜기</button>
-        <button id="led_off">led 끄기</button>
-        <button id="fan_on">fan 켜기</button>
-        <button id="fan_off">fan 끄기</button>
-        <button id="water_on">water 켜기</button>
-        <button id="water_off">water 끄기</button>
+
+    <h4 class="text-start mt-4">control</h4>
+    <div class="row">
+        <div class="col-4">
+                <div class="a">LED</div>
+                <div class="b">
+                    <button type="button" class="c btn btn-dark" data-toggle="button" aria-pressed="false" id="led_on">on</button>
+                    <button type="button" class="c btn btn-dark" data-toggle="button" aria-pressed="false" id="led_off">off</button>
+                </div>
+            </div>
+        <div class="col-4">
+            <div class="a2">Fan</div>
+            <div class="b2">
+                <button type="button" class="c btn btn-dark" data-toggle="button" aria-pressed="false" id="fan_on">on</button>
+                <button type="button" class="c btn btn-dark" data-toggle="button" aria-pressed="false" id="fan_off">off</button>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="a3">Water</div>
+            <div class="b3">
+                <button type="button" class="c btn btn-dark" data-toggle="button" aria-pressed="false" id="water_on">on</button>
+                <button type="button" class="c btn btn-dark" data-toggle="button" aria-pressed="false" id="water_off">off</button>
+            </div>
+        </div>
+    </div>
         <script>
             function sendsignal(buttonid) {
                     $.ajax({
@@ -119,7 +169,39 @@
                 });
             });
 
+            function updateSliderValue() {
+                var sliderValue = $('#slider').val();
+                $('#sliderValue').text(sliderValue);
+
+                // 슬라이더 값 변경 시 자동으로 Ajax 요청 보내기
+                sendSliderValue(sliderValue);
+            }
+
+            // 전송 버튼 클릭 시 Ajax 요청 보내기
+            function sendSliderValue(value) {
+                $.ajax({
+                    type: "POST",
+                    url: "http://113.198.63.26:14110/run_code",
+                    data: JSON.stringify({ data: value }),
+                    contentType: "application/json",
+                    success: function(response) {
+                        console.log('서버 응답:', response);
+                    },
+                    error: function(error) {
+                        console.error('오류 발생:', error);
+                    }
+                });
+            }
+
+            // 슬라이드 값 변경 이벤트에 함수 연결
+            $('#slider').on('input', updateSliderValue);
+
+            // 페이지 로드 시 초기 슬라이더 값으로 Ajax 요청 보내기
+            $(document).ready(function() {
+                var initialSliderValue = $('#slider').val();
+                sendSliderValue(initialSliderValue);
+            });
+
         </script>
-    </div>
 </div>
 </html>

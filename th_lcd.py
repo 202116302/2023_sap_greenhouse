@@ -13,7 +13,6 @@ import LCD1602
 dhtDevice = adafruit_dht.DHT22(board.D4)
 LCD1602.init(0x27, 1)
 
-
 # lux
 
 DEVICE = 0x23  # Default device I2C address
@@ -84,12 +83,28 @@ while True:
                 "Temperature = {:0.1f}℃ Humidity = {:0.1f}% Light Level = {:0.1f}lx Time = {}".format(t, h, readLight(),
                                                                                                       now.strftime(
                                                                                                           '%H:%M:%S %m-%d')))
-            LCD1602.write(2, 0, '{:0.1f}C {:0.1f}%'.format(t, h))
-            LCD1602.write(5, 1, '{:0.1f}lx'.format(readLight()))
+            # LCD1602.write(2, 0, '{:0.1f}C {:0.1f}%'.format(t, h))
+            # LCD1602.write(5, 1, '{:0.1f}lx'.format(readLight()))
+            # time.sleep(3)
+
+            LCD1602.write(2, 0, 'Temperature')
+            LCD1602.write(5, 1, '{:0.1f} C'.format(t))
             time.sleep(3)
-            # html = urllib.request.urlopen(
-            #     "https://api.thingspeak.com/update?api_key=W0PHS3YGBJ8GSKQJ&field1={:0.1f}&field2={:0.1f}&field3={:0.1f}".format(
-            #         t, h, readLight()))
+            LCD1602.clear()
+
+            LCD1602.write(4, 0, 'Humidity')
+            LCD1602.write(5, 1, '{:0.1f} %'.format(h))
+            time.sleep(3)
+            LCD1602.clear()
+
+            LCD1602.write(6, 0, 'lux')
+            LCD1602.write(4, 1, '{:0.1f} lx'.format(readLight()))
+            time.sleep(3)
+            LCD1602.clear()
+
+            html = urllib.request.urlopen(
+                "https://api.thingspeak.com/update?api_key=W0PHS3YGBJ8GSKQJ&field1={:0.1f}&field2={:0.1f}&field3={:0.1f}".format(
+                    t, h, readLight()))
         else:
             time.sleep(3)
             print('Read error')

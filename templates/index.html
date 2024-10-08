@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Click Example</title>
+</head>
+<body>
+
+<button id="led_on">led 켜기</button>
+<button id="led_off">led 끄기</button>
+<button id="fan_on">fan 켜기</button>
+<button id="fan_off">fan 끄기</button>
+<button id="water_on">water 켜기</button>
+<button id="water_off">wather 끄기</button>
+
+<script>
+        function sendDataToServer(dataToSend) {
+        fetch('/run_code', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'data=' + encodeURIComponent(dataToSend),
+        })
+        .then(response => response.text())
+        .then(result => {
+            console.log(result);
+        });
+    }
+        document.querySelectorAll('button').forEach(function(button) {
+    button.addEventListener('click', function() {
+        var buttonId = this.id;
+        sendDataToServer(buttonId);
+    });
+});
+
+</script>
+
+</body>
+</html>

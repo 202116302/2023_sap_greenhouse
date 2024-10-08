@@ -7,11 +7,24 @@ import board
 import adafruit_dht
 from urllib.error import URLError
 import LCD1602
+from pyfirmata import ArduinoMega, util
+import numpy as np
+import requests
+
+# arduino setting soil_moisture
+
+board_a = ArduinoMega('/dev/ttyACM0')
+
+it = util.Iterator(board_a)
+it.start()
+analog_1 = board_a.get_pin('a:1:i')
+
+
 
 # pin = 4
 
-dhtDevice = adafruit_dht.DHT22(board.D4)
-LCD1602.init(0x27, 1)
+dhtDevice = adafruit_dht.DHT22(board.D4, use_pulseio=False)
+
 
 # lux
 
@@ -77,50 +90,30 @@ while True:
         now = datetime.now()
         t = dhtDevice.temperature
         h = dhtDevice.humidity
+        analog_1_value = analog_1.read()
+        soil_moisture = np.interp(analog_1_value, [0.350, 0.900], [100, 0])
 
         if h is not None and t is not None:
+            requests.post("https://api.thingspeak.com/update?api_key=JPXMAHJC37K9I070&field1={:0.1f}&field2={:0.1f}&field3={:0.1f}&field4={:0.1f}".format(t, h, readLight(), soil_moisture))
             print(
-                "Temperature = {:0.1f}℃ Humidity = {:0.1f}% Light Level = {:0.1f}lx Time = {}".format(t, h, readLight(),
-                                                                                                      now.strftime(
-                                                                                                          '%H:%M:%S %m-%d')))
-            # LCD1602.write(2, 0, '{:0.1f}C {:0.1f}%'.format(t, h))
-            # LCD1602.write(5, 1, '{:0.1f}lx'.format(readLight()))
-            # time.sleep(3)
-
-            LCD1602.write(2, 0, 'Temperature')
-            LCD1602.write(5, 1, '{:0.1f} C'.format(t))
-            time.sleep(3)
-            LCD1602.clear()
-
-            LCD1602.write(4, 0, 'Humidity')
-            LCD1602.write(5, 1, '{:0.1f} %'.format(h))
-            time.sleep(3)
-            LCD1602.clear()
-
-            LCD1602.write(6, 0, 'lux')
-            LCD1602.write(4, 1, '{:0.1f} lx'.format(readLight()))
-            time.sleep(3)
-            LCD1602.clear()
-
-            html = urllib.request.urlopen(
-                "https://api.thingspeak.com/update?api_key=W0PHS3YGBJ8GSKQJ&field1={:0.1f}&field2={:0.1f}&field3={:0.1f}".format(
-                    t, h, readLight()))
+                "Temperature = {:0.1f}℃ Humidity = {:0.1f}% Light Level = {:0.1f}lx Soil_moisture = {:0.1f}% Time = {}".format(t, h, readLight(), soil_moisture, now.strftime('%H:%M:%S %m-%d')))
+            time.sleep(60)
         else:
-            time.sleep(3)
+            time.sleep(60)
             print('Read error')
 
     except RuntimeError as error:
-        print(error.args[0])
+        print(error)
         time.sleep(2.0)
         continue
 
     except URLError as e:
-        print(e.args[0])
+        print(e)
         time.sleep(2.0)
         continue
 
     except OSError as e:
-        print(e.args[0])
+        print(e)
         time.sleep(5)
         continue
 
